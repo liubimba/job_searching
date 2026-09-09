@@ -1,22 +1,30 @@
 package com.liubimba.backend.entity;
 
+import com.liubimba.backend.enums.Role;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Collection;
 
 @Setter
 @Getter
 @Entity
+@Table(name = "roles")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    Long id;
 
-    private String name;
-    @ManyToMany(mappedBy = "roles")
-    private Collection<UserEntity> users;
+    @Enumerated(EnumType.STRING)
+    @Column(unique = true, nullable = false)
+    Role key;
+
+    @Column(nullable = false)
+    String description;
 
     @ManyToMany
     @JoinTable(
@@ -25,7 +33,7 @@ public class RoleEntity {
                     name = "role_id", referencedColumnName = "id")
             ,
             inverseJoinColumns = @JoinColumn(
-                    name = "privilege_id",referencedColumnName = "id"
+                    name = "privilege_id", referencedColumnName = "id"
             )
     )
     private Collection<PrivilegeEntity> privileges;

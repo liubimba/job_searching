@@ -3,11 +3,9 @@ package com.liubimba.backend.dto;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
-@Accessors(fluent = true)
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PROTECTED)
 @Data
 public class UserDTO {
     String email;
@@ -15,6 +13,8 @@ public class UserDTO {
 
     String firstName;
     String lastName;
+
+    RoleDTO role;
 
     Boolean isEmailVerified;
 }

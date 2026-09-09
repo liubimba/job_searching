@@ -1,29 +1,32 @@
 package com.liubimba.backend.service;
 
 
-import com.liubimba.backend.repository.RoleRepository;
+import com.liubimba.backend.dto.UserDTO;
+import com.liubimba.backend.entity.UserEntity;
+import com.liubimba.backend.exception.UserMailExistsException;
+import com.liubimba.backend.mapper.UserMapper;
 import com.liubimba.backend.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service("userService")
-@Transactional
-public class UserService implements UserDetailsService {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+@Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class UserService {
+    UserRepository userRepository;
+    UserMapper userMapper;
 
     @Autowired
-    UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.userMapper = userMapper;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return null;
+    public UserEntity register(UserDTO dto) throws UserMailExistsException {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new UserMailExistsException("Email address already registered");
+        }
+        return userRepository.save(userMapper.toEntity(dto));
     }
 }
