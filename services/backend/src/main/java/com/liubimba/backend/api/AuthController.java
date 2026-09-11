@@ -1,7 +1,7 @@
 package com.liubimba.backend.api;
 
-import com.liubimba.backend.dto.ApplicantDTO;
 import com.liubimba.backend.dto.SignUpDTO;
+import com.liubimba.backend.dto.UserDTO;
 import com.liubimba.backend.exception.UserMailExistsException;
 import com.liubimba.backend.service.UserService;
 import lombok.AccessLevel;
@@ -31,11 +31,11 @@ public class AuthController {
 
     @PostMapping("sign_up")
     public ResponseEntity<Void> signUpApplicant(@Validated SignUpDTO dto) {
-        ApplicantDTO applicantDTO = new ApplicantDTO();
-        applicantDTO.setEmail(dto.getEmail());
-        applicantDTO.setPassword(passwordEncoder.encode(dto.getPassword()));
+        UserDTO user = new UserDTO();
+        user.setEmail(dto.getEmail());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         try {
-            applicantService.register(applicantDTO);
+            userService.register(user);
         } catch (UserMailExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }

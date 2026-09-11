@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class UserPrincipalDetailsService implements UserDetailsService {
     protected UserRepository userRepository;
 
-    UserPrincipalDetailsService(T userRepository) {
+    UserPrincipalDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

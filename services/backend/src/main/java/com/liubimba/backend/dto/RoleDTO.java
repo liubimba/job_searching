@@ -1,5 +1,8 @@
 package com.liubimba.backend.dto;
 
+import com.liubimba.backend.enums.Role;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +14,8 @@ import java.util.Collection;
 @Getter
 @Setter
 public class RoleDTO {
-    String name;
+    @Enumerated(EnumType.STRING)
+    Role role;
+    String description;
     Collection<PrivilegeDTO> privileges;
 }
